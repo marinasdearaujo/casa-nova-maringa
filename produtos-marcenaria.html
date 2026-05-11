@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Casa Nova · Marcenaria Sob Medida</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif; background: #15100c; color: #e8dcc8; line-height: 1.6; padding: 40px 20px; }
+  .container { max-width: 1100px; margin: 0 auto; }
+  header { text-align: center; padding: 30px 0 50px; border-bottom: 1px solid #3a2a1a; margin-bottom: 40px; }
+  h1 { font-size: 32px; font-weight: 300; letter-spacing: 2px; color: #c9a07a; }
+  .subtitle { font-size: 13px; color: #8b7560; margin-top: 8px; letter-spacing: 3px; text-transform: uppercase; }
+  h2 { font-size: 22px; font-weight: 400; color: #c9a07a; margin: 50px 0 12px; padding-bottom: 8px; border-bottom: 1px solid #3a2a1a; }
+  h3 { font-size: 16px; color: #c9a07a; margin: 24px 0 10px; letter-spacing: 1px; text-transform: uppercase; }
+  .section-meta { font-size: 14px; color: #8b7560; margin-bottom: 20px; font-style: italic; }
+
+  /* PLANTA */
+  .plant-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+    margin-bottom: 30px;
+  }
+  @media (max-width: 720px) { .plant-grid { grid-template-columns: 1fr; } }
+  .room {
+    background: #1f1812;
+    border: 1px solid #3a2a1a;
+    border-left: 3px solid #c9a07a;
+    border-radius: 0 4px 4px 0;
+    padding: 16px;
+  }
+  .room.priority { border-left-color: #8da866; }
+  .room-name { font-size: 15px; color: #e8dcc8; font-weight: 600; margin-bottom: 4px; }
+  .room-area { font-size: 13px; color: #c9a07a; margin-bottom: 8px; }
+  .room-dims { font-size: 12px; color: #a89684; line-height: 1.7; }
+  .room-dims strong { color: #c9a07a; }
+
+  /* PEÇAS */
+  .piece {
+    background: #1f1812;
+    border: 1px solid #3a2a1a;
+    border-radius: 6px;
+    padding: 18px 20px;
+    margin-bottom: 14px;
+  }
+  .piece.cut { opacity: 0.5; border-style: dashed; }
+  .piece-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 6px; flex-wrap: wrap; gap: 8px; }
+  .piece-num { font-size: 11px; color: #8b7560; letter-spacing: 2px; font-weight: 600; }
+  .piece-title { font-size: 16px; color: #e8dcc8; font-weight: 600; flex: 1; }
+  .piece-loc { font-size: 12px; color: #8b7560; margin-bottom: 10px; }
+  .piece-desc { font-size: 13px; color: #c8b896; margin-bottom: 8px; }
+  .piece-specs { font-size: 12px; color: #a89684; padding-left: 20px; margin: 6px 0; }
+  .piece-specs li { padding: 1px 0; }
+  .piece-specs li strong { color: #c9a07a; }
+  .piece-price { display: inline-block; font-size: 13px; color: #8da866; font-weight: 600; margin-top: 8px; padding: 4px 10px; background: rgba(141, 168, 102, 0.1); border-radius: 3px; }
+
+  /* RESUMO */
+  .summary { background: #1f1812; border: 1px solid #3a2a1a; border-radius: 6px; padding: 24px; margin-top: 30px; }
+  .summary table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  .summary th { text-align: left; padding: 10px; background: #2a201a; color: #c9a07a; font-weight: 500; }
+  .summary td { padding: 10px; border-bottom: 1px solid #2a201a; color: #c8b896; }
+  .summary tr.total td { background: #2a201a; font-weight: 600; color: #e8dcc8; border-top: 2px solid #8b5a3c; }
+
+  /* BANNERS */
+  .info-banner { background: rgba(106, 122, 74, 0.1); border-left: 3px solid #6a7a4a; padding: 14px 18px; border-radius: 0 4px 4px 0; margin-bottom: 24px; font-size: 13px; color: #c8b896; }
+  .info-banner strong { color: #8da866; }
+  .warn-banner { background: rgba(201, 160, 122, 0.08); border-left: 3px solid #c9a07a; padding: 14px 18px; border-radius: 0 4px 4px 0; margin-bottom: 24px; font-size: 13px; color: #c8b896; }
+  .warn-banner strong { color: #c9a07a; }
+
+  /* COMPACT TABLES */
+  .compact-table { width: 100%; border-collapse: collapse; font-size: 13px; margin: 14px 0; }
+  .compact-table th { text-align: left; padding: 8px 12px; background: #2a201a; color: #c9a07a; font-weight: 500; }
+  .compact-table td { padding: 8px 12px; border-bottom: 1px solid #2a201a; color: #c8b896; }
+  .compact-table .small { font-size: 12px; color: #8b7560; }
+
+  .back { display: inline-block; margin-bottom: 20px; color: #8b7560; text-decoration: none; font-size: 13px; }
+  .back:hover { color: #c9a07a; }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+<a class="back" href="index.html">← voltar pro índice</a>
+
+<header>
+  <h1>MARCENARIA SOB MEDIDA</h1>
+  <div class="subtitle">12 peças · Maringá · MDF nogueira + ferragens premium</div>
+</header>
+
+<!-- ========== PLANTA BAIXA — ANÁLISE DIMENSIONAL ========== -->
+<h2>1 · Planta baixa — dimensões REAIS (extraídas da planta oficial)</h2>
+<p class="section-meta">Casa 139,86m² · terreno 9,25 × 16,50m · pé-direito padrão 2,80m · sala com pé-direito duplo ~5,40m</p>
+
+<div class="info-banner">
+  <strong>✅ Confirmações da Marina (2026-05-10):</strong>
+  <ol style="padding-left:20px; margin-top:8px; line-height:1.7;">
+    <li><strong>SEM porta de correr</strong> entre cozinha e jantar — é parede normal/abertura (a indicação na planta era de projeto anterior). Parede sul da cozinha = ~2,5m sólida + abertura</li>
+    <li><strong>Churrasqueira fica DENTRO da cozinha</strong> (canto NE) — o "VAZIO" 1,80 × 1,95m na planta é provavelmente pátio técnico de ventilação/luz (confirmar com construtor)</li>
+    <li><strong>Lavanderia apertada:</strong> 2,10 × 1,02m · porta 85 × 210cm · lava+seca 60×60 cabe com folga mínima</li>
+  </ol>
+</div>
+
+<div class="plant-grid">
+
+  <div class="room priority">
+    <div class="room-name">Cozinha gourmet</div>
+    <div class="room-area">25,34m² · 4,65 × 5,45m · pé-direito 2,80m</div>
+    <div class="room-dims">
+      <strong>Parede norte (4,65m):</strong> ⭐ <strong>CHURRASQUEIRA no canto NE</strong> (pronta · construtor) + abertura pra lavanderia + pátio técnico (VAZIO)<br>
+      <strong>Parede leste (5,45m):</strong> ⭐ marcenaria P2 + geladeira embutida<br>
+      <strong>Parede oeste (5,45m):</strong> circulação + porta 90cm pra área externa de lazer<br>
+      <strong>Parede sul (4,65m):</strong> ~2,5m sólida (P4 cabe folgado) + abertura pro jantar<br>
+      <strong>Ilha central:</strong> 2,85 × 1,80m
+    </div>
+  </div>
+
+  <div class="room priority">
+    <div class="room-name">Jantar</div>
+    <div class="room-area">17,16m² · 4,65 × 3,69m (estimado)</div>
+    <div class="room-dims">
+      <strong>Parede norte (4,65m):</strong> abertura pra cozinha + parede sólida<br>
+      <strong>Parede sul:</strong> abertura pro estar (sala única integrada)<br>
+      <strong>Sem aparador</strong> — Marina decidiu cortar (louças cabem na cozinha)
+    </div>
+  </div>
+
+  <div class="room priority">
+    <div class="room-name">Estar (sala TV)</div>
+    <div class="room-area">17,16m² · 4,65 × 3,69m (estimado) · pé-direito DUPLO ~5,40m</div>
+    <div class="room-dims">
+      <strong>Parede leste (3,69m):</strong> rack suspenso + painel ripado TV (P5)<br>
+      <strong>Parede oeste (3,69m):</strong> sofá em L grafite Empório Estofados<br>
+      <strong>Parede sul:</strong> porta de entrada 1,20 × 2,70m + janela 2,35 × 2,30m<br>
+      <strong>Pé-direito duplo:</strong> ~5,40m (acústica precisa atenuar)
+    </div>
+  </div>
+
+  <div class="room priority">
+    <div class="room-name">Suíte master</div>
+    <div class="room-area">13,97m² · 3,60 × ~3,88m (medida planta)</div>
+    <div class="room-dims">
+      <strong>Parede oeste (3,60m):</strong> cabeceira da cama king (1,93m) encostada no painel + criados slim<br>
+      <strong>Parede leste (3,60m):</strong> ⭐ painel ripado P8 + TV embutida<br>
+      <strong>Parede norte (3,88m):</strong> ⭐ armário 6 portas P9 (~2,40m) + porta entrada NE<br>
+      <strong>Parede sul (3,88m):</strong> janela 2,00 × 1,15m + projeção do beiral<br>
+      <strong>Cama king:</strong> 1,93 × 2,03m — sobra ~83cm de cada lado pros criados<br>
+      <strong>BWC suíte:</strong> 3,48m² · porta 70cm × 210cm separada
+    </div>
+  </div>
+
+  <div class="room">
+    <div class="room-name">Quarto 1 (escritório fechado)</div>
+    <div class="room-area">7,95m² · 3,00 × 2,65m</div>
+    <div class="room-dims">
+      <strong>Janela:</strong> 1,60 × 1,15m<br>
+      <strong>Porta:</strong> 80cm × 210cm<br>
+      <strong>Parede norte (3,00m):</strong> mesa flutuante P10 (1,80m)<br>
+      <strong>Parede leste (2,65m):</strong> sofá-cama Tok&amp;Stok Marad Malaquita<br>
+      <strong>Parede oeste (2,65m):</strong> instrumentos pendurados + track lighting<br>
+      <strong>Parede sul:</strong> ⚠ <strong>conexão direta com P.LUZ</strong> (jardim de inverno · porta vidro)
+    </div>
+  </div>
+
+  <div class="room">
+    <div class="room-name">Quarto 2 (visitas → futuro quarto do bebê)</div>
+    <div class="room-area">10,79m² · 2,70 × 3,50m (medida planta)</div>
+    <div class="room-dims">
+      <strong>⚠ ZERO marcenaria sob medida</strong> — vai virar quarto de bebê em breve · tudo precisa ser MÓVEL/REALOCÁVEL<br>
+      <strong>Janela:</strong> 1,70 × 1,15m · <strong>Porta:</strong> 80cm × 210cm<br>
+      <strong>Cama queen:</strong> Marina já tem colchão queen<br>
+      <strong>Cômoda 4 gavetas</strong> Tok&amp;Stok/Mobly (compra pronta · <strong>pode virar trocador</strong> depois com tampo de espuma)<br>
+      <strong>Cabeceira estofada</strong> bouclé bege/grafite (compra pronta · cor neutra combina com decor infantil também)<br>
+      <strong>Decor:</strong> Shopee/realocável (almofadas, mantas, quadros)
+    </div>
+  </div>
+
+  <div class="room">
+    <div class="room-name">BWC social</div>
+    <div class="room-area">3,12m² · 2,40 × 1,30m</div>
+    <div class="room-dims">
+      <strong>Porta:</strong> 60cm × 210cm · <strong>janela:</strong> 30cm<br>
+      <strong>Serve:</strong> quartos 1, 2 e visitantes<br>
+      <strong>Bancada com gaveteiros</strong> sob medida (P11)
+    </div>
+  </div>
+
+  <div class="room">
+    <div class="room-name">BWC suíte</div>
+    <div class="room-area">3,48m² · 2,70 × 1,20m + 0,60m</div>
+    <div class="room-dims">
+      <strong>Porta:</strong> 70cm × 210cm (acessível pelo corredor)<br>
+      <strong>Bancada com gaveteiro</strong> sob medida (P11)
+    </div>
+  </div>
+
+  <div class="room">
+    <div class="room-name">Lavanderia</div>
+    <div class="room-area">2,16m² · 2,10 × 1,02m ⚠ apertada</div>
+    <div class="room-dims">
+      <strong>Porta:</strong> 85cm × 210cm<br>
+      <strong>Lava+seca LG VC4 14kg:</strong> ~60 × 60 × 85cm cabe com folga MÍNIMA<br>
+      <strong>Tanque embutido</strong> + aéreo + varal retrátil pra teto<br>
+      <strong>⚠ Construtor:</strong> ponto água quente + frio + dreno + tomada 220V dedicada 20A
+    </div>
+  </div>
+
+  <div class="room">
+    <div class="room-name">W.C. lavabo</div>
+    <div class="room-area">~1,85m² · ao lado da lavanderia</div>
+    <div class="room-dims">
+      <strong>Porta:</strong> 65cm × 210cm<br>
+      <strong>Pequeno · só vaso + pia mínima</strong>
+    </div>
+  </div>
+
+  <div class="room">
+    <div class="room-name">Circulação (corredor)</div>
+    <div class="room-area">5,50m² · 4,60 × 1,20m</div>
+    <div class="room-dims">
+      <strong>Acessa:</strong> quartos 1+2, BWCs (suíte + social), suíte<br>
+      <strong>Sem marcenaria</strong> prevista
+    </div>
+  </div>
+
+  <div class="room">
+    <div class="room-name">Hall de entrada</div>
+    <div class="room-area">pequeno · 75 × 55cm interno</div>
+    <div class="room-dims">
+      <strong>Entrada principal:</strong> porta 1,20 × 2,70m do estar<br>
+      <strong>Conexão:</strong> hall → estar (sem sapateira/marcenaria — entra direto)
+    </div>
+  </div>
+
+  <div class="room">
+    <div class="room-name">Garagem coberta</div>
+    <div class="room-area">17,26m² · 5,20 × 3,32m · 2 vagas</div>
+    <div class="room-dims">
+      <strong>Portão:</strong> 1,00m de medida indicada<br>
+      <strong>Sem marcenaria prevista</strong> — só piso e iluminação
+    </div>
+  </div>
+
+  <div class="room">
+    <div class="room-name">VAZIO (pátio técnico NE)</div>
+    <div class="room-area">3,51m² · 1,80 × 1,95m</div>
+    <div class="room-dims">
+      <strong>Pátio técnico aberto</strong> — provavelmente ventilação/luz natural · confirmar finalidade com construtor<br>
+      <strong>Churrasqueira NÃO fica aqui</strong> — fica dentro da cozinha (canto NE)
+    </div>
+  </div>
+
+  <div class="room">
+    <div class="room-name">P.LUZ (jardim de inverno)</div>
+    <div class="room-area">4,50m² · 1,50 × 3,00m</div>
+    <div class="room-dims">
+      <strong>Pátio aberto pro céu</strong> · acesso pela parede sul do escritório<br>
+      <strong>Porta vidro</strong> (transparência pra ver jardim)
+    </div>
+  </div>
+
+  <div class="room">
+    <div class="room-name">Área de lazer (pátio aberto NW)</div>
+    <div class="room-area">~21,5m² · 4,30 × 5,00m (externo)</div>
+    <div class="room-dims">
+      <strong>Deck centralizado:</strong> ~2,5 × 3m com jacuzzi no meio<br>
+      <strong>Banco-baú lateral:</strong> ~3m comprimento (orçado em área de lazer)<br>
+      <strong>Acesso:</strong> pela parede oeste da cozinha (porta 90cm)
+    </div>
+  </div>
+
+</div>
+
+<!-- ========== O QUE O CONSTRUTOR ENTREGA ========== -->
+<h2>2 · O que JÁ vem do construtor (não orçar marcenaria)</h2>
+
+<div class="info-banner">
+  <strong>Construtor entrega pronto:</strong> porcelanato cinza grande formato (sociais), esquadrias e portas pretas, ripado madeira escura na fachada e coluna do hall, mármore Calacatta nos banheiros, sancas com fitas LED warm, pé-direito duplo na sala, cubas dos banheiros, lavanderia com tanque, vidros, portas, portão, segurança, <strong>churrasqueira pronta com tijolinho preto no canto NE da cozinha</strong>.
+</div>
+
+<!-- ========== ESCOLHA: MARCENEIRO VS LOJAS ========== -->
+<h2>3 · Marceneiro independente vs Lojas planejadas</h2>
+
+<table class="compact-table">
+  <tr>
+    <th>Critério</th>
+    <th>Marceneiro independente ⭐</th>
+    <th>Loja planejada (Dell Anno/Italínea)</th>
+  </tr>
+  <tr>
+    <td>Preço</td>
+    <td style="color:#8da866;">30-50% mais barato</td>
+    <td>Mais caro</td>
+  </tr>
+  <tr>
+    <td>Customização</td>
+    <td style="color:#8da866;">Total (peças únicas, dimensões livres)</td>
+    <td>Limitado ao catálogo</td>
+  </tr>
+  <tr>
+    <td>Acabamento</td>
+    <td>Bom (depende do profissional)</td>
+    <td style="color:#8da866;">Industrial superior</td>
+  </tr>
+  <tr>
+    <td>Garantia</td>
+    <td>1-2 anos</td>
+    <td style="color:#8da866;">5-10 anos</td>
+  </tr>
+  <tr>
+    <td>Prazo</td>
+    <td>30-60 dias</td>
+    <td style="color:#8da866;">45-60 dias (definido)</td>
+  </tr>
+</table>
+
+<div class="info-banner">
+  <strong>Recomendação:</strong> peças com customização (parede leste cozinha, ilha, painel ripado, cama plataforma com gavetas) → <strong>marceneiro independente</strong>. Pegar 3 orçamentos. Investir R$ 1-3k em projetista pra detalhamento técnico antes de pedir orçamento.
+</div>
+
+<h3>Onde achar marceneiros em Maringá</h3>
+
+<table class="compact-table">
+  <tr>
+    <th>Plataforma</th>
+    <th>Como funciona</th>
+  </tr>
+  <tr>
+    <td><a href="https://www.cronoshare.com.br/servicos/marceneiros/parana/maringa" target="_blank" style="color:#c9a07a;">Cronoshare</a></td>
+    <td>Cota 3-4 marceneiros locais em 24-48h</td>
+  </tr>
+  <tr>
+    <td><a href="https://guiafix.com.br/maringa-pr/marceneiro" target="_blank" style="color:#c9a07a;">GuiaFix Maringá</a></td>
+    <td>Plataforma de cotação simultânea</td>
+  </tr>
+  <tr>
+    <td><a href="https://www.getninjas.com.br/reformas-e-reparos/marceneiro/pr/maringa" target="_blank" style="color:#c9a07a;">GetNinjas</a></td>
+    <td>Posta o pedido e recebe propostas</td>
+  </tr>
+  <tr>
+    <td>Lar Center Maringá</td>
+    <td>Visitar pessoalmente e perguntar nas lojas — melhores marceneiros vivem de indicação</td>
+  </tr>
+</table>
+
+<!-- ========== BRIEFING DAS PEÇAS ========== -->
+<h2>4 · Briefing das 12 peças sob medida</h2>
+<p class="section-meta">Mandar pra cada um dos 3 marceneiros pra cotarem com base igual</p>
+
+<h3>Cozinha (5 peças)</h3>
+
+<div class="piece">
+  <div class="piece-head">
+    <span class="piece-num">P1</span>
+    <span class="piece-title">Bancada parede norte</span>
+  </div>
+  <div class="piece-loc">Cozinha · parede norte · ~3m linear (sai antes da churrasqueira)</div>
+  <div class="piece-desc">Bancada perimetral com tampo quartzo preto matte. Sem cuba (cuba vai na ilha). Aéreos opcionais.</div>
+  <ul class="piece-specs">
+    <li><strong>Largura útil:</strong> ~3m · <strong>profundidade:</strong> 60cm · <strong>altura:</strong> 90cm</li>
+    <li><strong>Tampo:</strong> quartzo preto matte (Silestone, Cosentino ou similar)</li>
+    <li><strong>Aéreos:</strong> opcional (decidir depois)</li>
+  </ul>
+  <span class="piece-price">R$ 3.000 – 6.000</span>
+</div>
+
+<div class="piece">
+  <div class="piece-head">
+    <span class="piece-num">P2</span>
+    <span class="piece-title">Marcenaria parede leste com geladeira embutida</span>
+  </div>
+  <div class="piece-loc">Cozinha · parede leste · 4,65m largura × 2,80m altura</div>
+  <div class="piece-desc">Marcenaria contínua chão-teto MDF nogueira com geladeira french door embutida no meio. Acima e abaixo da geladeira: armários e despensa. Versão simplificada (modular ao redor da geladeira, não 100% contínua).</div>
+  <ul class="piece-specs">
+    <li><strong>Material:</strong> MDF Duratex/Arauco 18mm + laminado nogueira + fita ABS</li>
+    <li><strong>Nicho geladeira:</strong> dimensão depende da escolha (Electrolux IM8IS ou Samsung RF49A) — confirmar com marceneiro após decisão final</li>
+    <li><strong>Acima:</strong> armário pra panelas grandes, formas, eletros pouco usados</li>
+    <li><strong>Lateral:</strong> torre de despensa com gavetas internas (potes vidro)</li>
+    <li><strong>Puxadores:</strong> latão envelhecido OU cabo embutido (sem puxador aparente)</li>
+    <li><strong>Iluminação:</strong> LED interna nas prateleiras + sob aéreos</li>
+    <li><strong>⚠ Construtor:</strong> ponto de água fria 1/4" + registro independente atrás da geladeira</li>
+  </ul>
+  <span class="piece-price">R$ 7.000 – 9.000 (versão simplificada)</span>
+</div>
+
+<div class="piece">
+  <div class="piece-head">
+    <span class="piece-num">P3</span>
+    <span class="piece-title">Ilha central (com cooktop + cuba embutidos)</span>
+  </div>
+  <div class="piece-loc">Centro da cozinha · 2,00 × 1,00m × 90cm altura</div>
+  <div class="piece-desc">Ilha independente MDF nogueira com tampo quartzo preto matte. Cooktop indução Dako 5 bocas + cuba inox embutidos no lado norte. Lado social (sul): banquetas pra 4 pessoas + frente ripada vertical nogueira. Iluminação LED warm embaixo (efeito flutuante).</div>
+  <ul class="piece-specs">
+    <li><strong>Tampo:</strong> quartzo preto matte (mesmo da P1)</li>
+    <li><strong>Embutidos:</strong> cooktop Dako 5 bocas (75cm) + cuba inox grande</li>
+    <li><strong>Frente social:</strong> ripado vertical madeira nogueira</li>
+    <li><strong>Gavetas internas (lado norte):</strong> utensílios e talheres</li>
+    <li><strong>Tomadas USB-C:</strong> 1-2 escamoteáveis no tampo</li>
+    <li><strong>LED warm 2700K</strong> embaixo (efeito flutuante)</li>
+    <li><strong>⚠ Construtor:</strong> tomada 220V dedicada · circuito 40A · cabo 6mm² · disjuntor 40A próprio atrás da ilha</li>
+  </ul>
+  <span class="piece-price">R$ 8.000 – 15.000</span>
+</div>
+
+<div class="piece">
+  <div class="piece-head">
+    <span class="piece-num">P4</span>
+    <span class="piece-title">Armário parede sul + APPLIANCE GARAGE + DESPENSA puxa-puxa</span>
+  </div>
+  <div class="piece-loc">Cozinha · parede sul · ~2,5m sólida (resto é abertura pro jantar)</div>
+  <div class="piece-desc">Armário nogueira chão-teto na parte sólida da parede sul. Embutimento de forno Brastemp BOC84AR 84L + microondas atual da Marina (kit embutir universal). Plus: appliance garage (eletros pequenos plugados e escondidos) + despensa puxa-puxa (alimentos secos organizados).</div>
+  <ul class="piece-specs">
+    <li><strong>Nichos:</strong> forno embutido 60×60cm + microondas embutido 60×40cm</li>
+    <li><strong>Appliance garage:</strong> ~80×50×60cm · porta deslizante vertical · 4-6 tomadas internas + LED · pra airfryer, sanduicheira, cafeteira, chaleira, processador, liquidificador</li>
+    <li><strong>Despensa puxa-puxa:</strong> coluna ~30-40cm largura × 60cm profundidade × 200cm altura · prateleiras escalonadas · ~30-40 potes vidro padronizados</li>
+    <li><strong>Material:</strong> mesmo da P2 (nogueira)</li>
+  </ul>
+  <span class="piece-price">R$ 7.000 – 11.000</span>
+</div>
+
+<h3>Sala (1 peça)</h3>
+
+<div class="piece">
+  <div class="piece-head">
+    <span class="piece-num">P5</span>
+    <span class="piece-title">Rack suspenso + painel ripado TV no estar</span>
+  </div>
+  <div class="piece-loc">Estar · parede leste · 4,15m largura × pé-direito duplo ~5,40m</div>
+  <div class="piece-desc">Rack suspenso curto + painel ripado vertical pra TV embutida. Versão simplificada — sem aparador no jantar (decisão Marina: louças cabem todas na cozinha). Iluminação LED warm pra atenuar acústica do pé-direito duplo.</div>
+  <ul class="piece-specs">
+    <li><strong>Rack suspenso:</strong> ~1,80-2,40m × 30-35cm × 25cm altura · flutuante</li>
+    <li><strong>Painel ripado vertical TV:</strong> ~2,00 × 2,40m · ripas com 1-2cm de gap</li>
+    <li><strong>TV embutida:</strong> 50-65 polegadas (a que já têm)</li>
+    <li><strong>Saídas escondidas</strong> pra HDMI/energia/internet</li>
+    <li><strong>LED warm 2700K</strong> atrás do painel + embaixo do rack</li>
+    <li><strong>Material:</strong> nogueira (mesmo da cozinha pra unidade visual)</li>
+  </ul>
+  <span class="piece-price">R$ 4.000 – 7.000</span>
+</div>
+
+<h3>Suíte master (4 peças) — NOVAS</h3>
+
+<div class="piece">
+  <div class="piece-head">
+    <span class="piece-num">P6</span>
+    <span class="piece-title">Cama plataforma KING com 4 GAVETAS na base</span>
+  </div>
+  <div class="piece-loc">Suíte · parede oeste · cama 1,93 × 2,03m</div>
+  <div class="piece-desc">Cama plataforma sob medida nogueira (mesma madeira do painel ripado da parede leste). 4 gavetas integradas na base com corrediças amortecedor (Hettich/Blum). Resolve roupa de cama king (lençol, fronhas) + edredom + mantas + colcha sem ocupar espaço no armário.</div>
+  <ul class="piece-specs">
+    <li><strong>Dimensões cama:</strong> 1,93 × 2,03m (king padrão Brasil)</li>
+    <li><strong>Plataforma:</strong> ~30-35cm de altura (fica baixa, vibe boutique hotel)</li>
+    <li><strong>4 gavetas integradas:</strong> 2 de cada lado · profundidade total da cama</li>
+    <li><strong>Corrediças:</strong> Hettich/Blum amortecedor (não bate ao fechar)</li>
+    <li><strong>Acabamento:</strong> MDF nogueira + laminado · fita ABS bordas</li>
+    <li><strong>Visual:</strong> idêntico à plataforma simples — ninguém vê que tem gaveta</li>
+    <li><strong>Cabeceira:</strong> encostada no painel ripado da parede oeste (não cabeceira separada — usa o painel)</li>
+  </ul>
+  <span class="piece-price">R$ 5.000 – 8.000</span>
+</div>
+
+<div class="piece">
+  <div class="piece-head">
+    <span class="piece-num">P7</span>
+    <span class="piece-title">Criados-mudos slim sob medida (par)</span>
+  </div>
+  <div class="piece-loc">Suíte · 1 de cada lado da cama king · 35cm profundidade</div>
+  <div class="piece-desc">2 criados-mudos sob medida slim — só 35cm de profundidade pra caber nos 88cm que sobram de cada lado da cama king. Mesma nogueira pra unidade visual com cama + painel ripado.</div>
+  <ul class="piece-specs">
+    <li><strong>Dimensões cada:</strong> 50-55cm largura × 35cm profundidade × ~50cm altura</li>
+    <li><strong>2 gavetas</strong> com amortecedor + tomada USB-C embutida</li>
+    <li><strong>Acabamento:</strong> nogueira (mesma cama)</li>
+    <li><strong>Pegador:</strong> cabo embutido (visual clean)</li>
+  </ul>
+  <span class="piece-price">R$ 1.500 – 2.500 (par)</span>
+</div>
+
+<div class="piece">
+  <div class="piece-head">
+    <span class="piece-num">P8</span>
+    <span class="piece-title">Painel ripado parede leste com TV embutida</span>
+  </div>
+  <div class="piece-loc">Suíte · parede leste · 3,77 × 2,40m altura</div>
+  <div class="piece-desc">Painel ripado nogueira chão-teto com TV embutida no centro. Função estética + isolamento acústico (parede divisória).</div>
+  <ul class="piece-specs">
+    <li><strong>Dimensões:</strong> 3,77 × 2,40m</li>
+    <li><strong>Ripas verticais:</strong> 1-2cm de gap entre elas</li>
+    <li><strong>Nicho TV:</strong> 50-65 polegadas no centro</li>
+    <li><strong>Saídas escondidas</strong> pra fios HDMI/energia</li>
+    <li><strong>Lã de rocha</strong> entre montantes (isolamento acústico com hall)</li>
+    <li><strong>1-2 nichos pequenos</strong> pra decor opcionais</li>
+  </ul>
+  <span class="piece-price">R$ 4.000 – 7.000</span>
+</div>
+
+<div class="piece">
+  <div class="piece-head">
+    <span class="piece-num">P9</span>
+    <span class="piece-title">Armário 6 portas parede norte</span>
+  </div>
+  <div class="piece-loc">Suíte · parede norte · ~2,40m largura × 60cm profundidade × 2,40m altura</div>
+  <div class="piece-desc">Armário grande pra substituir closet inexistente. 6 portas confirmadas (Marina+Higor têm bastante roupa). Cabe roupa do dia + roupa de cama + documentos (gaveta com chave) + topo pra malas.</div>
+  <ul class="piece-specs">
+    <li><strong>Distribuição interna:</strong> 1 cabideiro alto + 1 baixo + 4-6 prateleiras + 5-6 gavetas + cesto aramado pra calça</li>
+    <li><strong>Gaveta dedicada com chave</strong> pra documentos</li>
+    <li><strong>2-3 prateleiras altas</strong> pra roupa de cama + edredons</li>
+    <li><strong>Topo (~30-40cm):</strong> aproveita pra malas (não fecha até o teto)</li>
+    <li><strong>50cm livres no canto NE</strong> pra porta de entrada</li>
+    <li><strong>LED interno automático</strong> com sensor de presença</li>
+    <li><strong>Espelho interno embutido</strong> em uma das portas</li>
+    <li><strong>Acabamento:</strong> nogueira (combina com cama + painel)</li>
+  </ul>
+  <span class="piece-price">R$ 5.000 – 9.000</span>
+</div>
+
+<h3>Escritório (1 peça) — NOVA</h3>
+
+<div class="piece">
+  <div class="piece-head">
+    <span class="piece-num">P10</span>
+    <span class="piece-title">Mesa flutuante com fita LED</span>
+  </div>
+  <div class="piece-loc">Escritório · parede norte · ~1,80m</div>
+  <div class="piece-desc">Mesa flutuante (suspensa da parede) pra Marina + Higor trabalharem juntos. Fita LED warm 2700K embaixo pra efeito floating. Aproveita a mesa retangular 1,80×0,80m que Marina já tem como tampo OU faz tampo sob medida.</div>
+  <ul class="piece-specs">
+    <li><strong>Largura:</strong> ~1,80m (cabe 2 setups · Marina + Higor)</li>
+    <li><strong>Profundidade:</strong> 70-80cm</li>
+    <li><strong>Suporte parede:</strong> mão-francesa metálica preta escondida</li>
+    <li><strong>Fita LED warm 2700K</strong> embaixo (efeito flutuante)</li>
+    <li><strong>Passa-cabos</strong> embutido pra HDMI/energia (visual clean)</li>
+    <li><strong>Material:</strong> nogueira escura (combina com paleta)</li>
+    <li><strong>Opção:</strong> aproveitar o tampo da mesa que Marina já tem (corta a base) OU tampo novo</li>
+  </ul>
+  <span class="piece-price">R$ 500 – 1.500</span>
+</div>
+
+<h3>Banheiros + Lavanderia (2 peças)</h3>
+
+<div class="piece">
+  <div class="piece-head">
+    <span class="piece-num">P11</span>
+    <span class="piece-title">Gaveteiros banheiros (BWC suíte + BWC social)</span>
+  </div>
+  <div class="piece-loc">2 banheiros · ~80cm cada · embaixo das bancadas existentes</div>
+  <div class="piece-desc">Marcenaria pequena pra organizar embaixo das pias. Material resistente à umidade.</div>
+  <ul class="piece-specs">
+    <li><strong>Largura:</strong> ~80cm cada (medir bancada existente)</li>
+    <li><strong>4 gavetas com amortecedor</strong></li>
+    <li><strong>Material:</strong> MDF resistente à umidade</li>
+    <li><strong>Puxadores:</strong> latão envelhecido</li>
+  </ul>
+  <span class="piece-price">R$ 1.500 – 3.000 (par)</span>
+</div>
+
+<div class="piece">
+  <div class="piece-head">
+    <span class="piece-num">P12</span>
+    <span class="piece-title">Marcenaria lavanderia</span>
+  </div>
+  <div class="piece-loc">Lavanderia · 2,16m² (apertada)</div>
+  <div class="piece-desc">Maximizar 2,16m² apertados — aéreo + bancada com tanque + espaço pra lava+seca LG 14kg.</div>
+  <ul class="piece-specs">
+    <li><strong>Aéreos:</strong> produtos de limpeza, sabão, detergente</li>
+    <li><strong>Tampo com tanque inox embutido</strong></li>
+    <li><strong>Espaço lateral 60cm</strong> pra lava+seca LG VC4 14kg</li>
+    <li><strong>Varal retrátil</strong> pra teto</li>
+    <li><strong>Material:</strong> MDF resistente à umidade · acabamento branco/claro pra ampliar visualmente</li>
+    <li><strong>⚠ Construtor:</strong> ponto de água quente + frio + dreno + tomada 220V dedicada 20A</li>
+  </ul>
+  <span class="piece-price">R$ 1.500 – 3.000</span>
+</div>
+
+<!-- ========== RESUMO ========== -->
+<div class="summary">
+  <h3 style="color:#c9a07a; margin-bottom:16px;">Resumo — 12 peças sob medida</h3>
+  <table>
+    <tr>
+      <th>Peça</th>
+      <th>Cômodo</th>
+      <th>Faixa</th>
+    </tr>
+    <tr><td>P1 · Bancada parede norte</td><td>Cozinha</td><td>R$ 3.000 – 6.000</td></tr>
+    <tr><td>P2 · Parede leste com geladeira</td><td>Cozinha</td><td>R$ 7.000 – 9.000</td></tr>
+    <tr><td>P3 · Ilha central</td><td>Cozinha</td><td>R$ 8.000 – 15.000</td></tr>
+    <tr><td>P4 · Parede sul + appliance garage + despensa</td><td>Cozinha</td><td>R$ 7.000 – 11.000</td></tr>
+    <tr><td>P5 · Rack + painel ripado TV</td><td>Estar</td><td>R$ 4.000 – 7.000</td></tr>
+    <tr><td><strong>P6 · Cama plataforma KING + 4 gavetas</strong></td><td>Suíte</td><td><strong>R$ 5.000 – 8.000</strong></td></tr>
+    <tr><td><strong>P7 · Criados slim 35cm (par)</strong></td><td>Suíte</td><td><strong>R$ 1.500 – 2.500</strong></td></tr>
+    <tr><td>P8 · Painel ripado parede leste</td><td>Suíte</td><td>R$ 4.000 – 7.000</td></tr>
+    <tr><td>P9 · Armário 6 portas</td><td>Suíte</td><td>R$ 5.000 – 9.000</td></tr>
+    <tr><td><strong>P10 · Mesa flutuante</strong></td><td>Escritório</td><td><strong>R$ 500 – 1.500</strong></td></tr>
+    <tr><td>P11 · Gaveteiros banheiros (par)</td><td>BWC suíte + social</td><td>R$ 1.500 – 3.000</td></tr>
+    <tr><td>P12 · Lavanderia</td><td>Lavanderia</td><td>R$ 1.500 – 3.000</td></tr>
+    <tr class="total">
+      <td colspan="2">TOTAL FAIXA</td>
+      <td>R$ 48.000 – 82.000</td>
+    </tr>
+  </table>
+  <p style="margin-top:16px; font-size:13px; color:#a89684;">
+    <strong style="color:#c9a07a;">Cenário realista esperado:</strong> com marceneiro independente + acabamento médio (MDF nogueira Duratex/Arauco + ferragens Hettich/Blum + tampo quartzo) → <strong style="color:#8da866;">~R$ 55-60k</strong>
+  </p>
+  <p style="margin-top:8px; font-size:12px; color:#8b7560;">
+    <strong>Nota:</strong> banco-baú do deck (área de lazer · R$ 5-9k) está orçado na planilha de área de lazer. Churrasqueira já pronta pelo construtor. Aparador do jantar cancelado (decisão Marina).
+  </p>
+</div>
+
+<!-- ========== CHECKLIST PRA ORÇAR ========== -->
+<h2>5 · Como pedir os 3 orçamentos</h2>
+
+<table class="compact-table">
+  <tr>
+    <th width="30%">Item</th>
+    <th>O que pedir/conferir</th>
+  </tr>
+  <tr>
+    <td>Material proposto</td>
+    <td>MDF Duratex/Arauco/Eucatex 18mm + laminado nogueira + fita ABS bordas</td>
+  </tr>
+  <tr>
+    <td>Ferragens</td>
+    <td>Hettich, Blum ou Hafele (corrediças amortecedor + dobradiças)</td>
+  </tr>
+  <tr>
+    <td>Tampos</td>
+    <td>Quartzo preto matte (Silestone, Cosentino, Dekton)</td>
+  </tr>
+  <tr>
+    <td>Prazo</td>
+    <td>Fabricação + montagem em dias úteis</td>
+  </tr>
+  <tr>
+    <td>Garantia</td>
+    <td>Mínimo 2 anos por escrito</td>
+  </tr>
+  <tr>
+    <td>Referências</td>
+    <td>3 obras anteriores parecidas — pedir foto + contato dos clientes</td>
+  </tr>
+  <tr>
+    <td>Pagamento</td>
+    <td>Entrada + parcelas vinculadas a milestones (não 100% upfront)</td>
+  </tr>
+  <tr>
+    <td>Visita à oficina</td>
+    <td>Marceneiro sério mostra obra em andamento sem problema</td>
+  </tr>
+  <tr>
+    <td>Contrato escrito</td>
+    <td>Detalhar prazo, materiais, ferragens, garantia, multa por atraso</td>
+  </tr>
+</table>
+
+<div class="info-banner" style="margin-top:24px;">
+  <strong>Importante:</strong> mande pra cada marceneiro a planta baixa (PDF do construtor) + esse briefing das 12 peças + fotos das referências da casa. Quanto mais detalhado o briefing, mais comparáveis ficam os 3 orçamentos.
+</div>
+
+<div class="warn-banner" style="margin-top:20px;">
+  <strong>NÃO escolha só pelo preço:</strong> o mais barato muitas vezes corta canto em ferragens (sem amortecedor = porta bate) ou em fitas de borda (descolam em 6 meses). Preço médio com referências sólidas é a escolha mais segura.
+</div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Casa Nova · Sala (Estar + Jantar)</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif; background: #15100c; color: #e8dcc8; line-height: 1.6; padding: 40px 20px; }
+  .container { max-width: 1100px; margin: 0 auto; }
+  header { text-align: center; padding: 30px 0 50px; border-bottom: 1px solid #3a2a1a; margin-bottom: 40px; }
+  h1 { font-size: 32px; font-weight: 300; letter-spacing: 2px; color: #c9a07a; }
+  .subtitle { font-size: 13px; color: #8b7560; margin-top: 8px; letter-spacing: 3px; text-transform: uppercase; }
+  h2 { font-size: 22px; font-weight: 400; color: #c9a07a; margin: 50px 0 12px; padding-bottom: 8px; border-bottom: 1px solid #3a2a1a; }
+  h3 { font-size: 16px; color: #c9a07a; margin: 24px 0 10px; letter-spacing: 1px; text-transform: uppercase; }
+  .section-meta { font-size: 14px; color: #8b7560; margin-bottom: 20px; font-style: italic; }
+
+  /* PLANTA */
+  .plant-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; margin-bottom: 30px; }
+  @media (max-width: 720px) { .plant-grid { grid-template-columns: 1fr; } }
+  .room {
+    background: #1f1812;
+    border: 1px solid #3a2a1a;
+    border-left: 3px solid #c9a07a;
+    border-radius: 0 4px 4px 0;
+    padding: 16px;
+  }
+  .room.priority { border-left-color: #8da866; }
+  .room-name { font-size: 15px; color: #e8dcc8; font-weight: 600; margin-bottom: 4px; }
+  .room-area { font-size: 13px; color: #c9a07a; margin-bottom: 8px; }
+  .room-dims { font-size: 12px; color: #a89684; line-height: 1.7; }
+  .room-dims strong { color: #c9a07a; }
+
+  /* CARDS */
+  .card {
+    background: #1f1812;
+    border: 1px solid #3a2a1a;
+    border-radius: 6px;
+    padding: 24px;
+    margin-bottom: 18px;
+  }
+  .card.chosen {
+    border: 1px solid #6a7a4a;
+    background: linear-gradient(180deg, #1a2515 0%, #1f1812 100%);
+  }
+  .card.alt {
+    background: #1f1812;
+    opacity: 0.95;
+  }
+  .card-tag {
+    display: inline-block;
+    background: #3a2a1a;
+    color: #c9a07a;
+    padding: 4px 12px;
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    border-radius: 3px;
+    font-weight: 600;
+    margin-bottom: 12px;
+  }
+  .card.chosen .card-tag { background: #6a7a4a; color: #15100c; }
+  .card h4 { font-size: 18px; color: #e8dcc8; margin-bottom: 4px; }
+  .brand { font-size: 13px; color: #c9a07a; margin-bottom: 14px; font-weight: 500; }
+  .specs { font-size: 13px; color: #c8b896; margin-bottom: 12px; list-style: none; padding: 0; }
+  .specs li { padding: 3px 0; }
+  .specs li strong { color: #c9a07a; }
+  .price { font-size: 20px; color: #c9a07a; font-weight: 500; margin: 8px 0; }
+  .price-note { font-size: 12px; color: #a89684; margin-bottom: 14px; }
+  .card-link {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 9px 16px;
+    background: #3a2a1a;
+    color: #c9a07a;
+    text-decoration: none;
+    border-radius: 4px;
+    font-size: 13px;
+    border: 1px solid #4a3a2a;
+  }
+  .card-link:hover { background: #4a3a2a; }
+
+  /* SUMMARY */
+  .summary { background: #1f1812; border: 1px solid #3a2a1a; border-radius: 6px; padding: 24px; margin-top: 30px; }
+  .summary table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  .summary th { text-align: left; padding: 10px; background: #2a201a; color: #c9a07a; font-weight: 500; }
+  .summary td { padding: 10px; border-bottom: 1px solid #2a201a; color: #c8b896; }
+  .summary tr.total td { background: #2a201a; font-weight: 600; color: #e8dcc8; border-top: 2px solid #8b5a3c; }
+
+  /* BANNERS */
+  .info-banner { background: rgba(106, 122, 74, 0.1); border-left: 3px solid #6a7a4a; padding: 14px 18px; border-radius: 0 4px 4px 0; margin-bottom: 24px; font-size: 13px; color: #c8b896; }
+  .info-banner strong { color: #8da866; }
+  .warn-banner { background: rgba(201, 160, 122, 0.08); border-left: 3px solid #c9a07a; padding: 14px 18px; border-radius: 0 4px 4px 0; margin-bottom: 24px; font-size: 13px; color: #c8b896; }
+  .warn-banner strong { color: #c9a07a; }
+
+  /* TABLE COMPACT */
+  .compact-table { width: 100%; border-collapse: collapse; font-size: 13px; margin: 14px 0; }
+  .compact-table th { text-align: left; padding: 8px 12px; background: #2a201a; color: #c9a07a; font-weight: 500; }
+  .compact-table td { padding: 8px 12px; border-bottom: 1px solid #2a201a; color: #c8b896; }
+
+  .back { display: inline-block; margin-bottom: 20px; color: #8b7560; text-decoration: none; font-size: 13px; }
+  .back:hover { color: #c9a07a; }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+<a class="back" href="index.html">← voltar pro índice</a>
+
+<header>
+  <h1>SALA — ESTAR + JANTAR</h1>
+  <div class="subtitle">Sofá em L cinza chumbo · mesa marceneiro · 6 cadeiras · iluminação · tapete</div>
+</header>
+
+<!-- ========== ANÁLISE DIMENSIONAL ========== -->
+<h2>1 · Análise dimensional (extraída da planta)</h2>
+
+<div class="plant-grid">
+
+  <div class="room priority">
+    <div class="room-name">Estar (sala TV)</div>
+    <div class="room-area">17,16m² · 4,65 × 3,69m · pé-direito DUPLO ~5,40m</div>
+    <div class="room-dims">
+      <strong>Parede oeste (3,69m):</strong> ⭐ sofá em L 3m + chaise 1,50m perpendicular<br>
+      <strong>Parede leste (3,69m):</strong> rack suspenso + painel ripado TV (P5 marcenaria)<br>
+      <strong>Parede sul (4,65m):</strong> porta de entrada 1,20×2,70m + janela 2,35×2,30m<br>
+      <strong>Parede norte:</strong> integrada com jantar (sem divisória)<br>
+      <strong>Pé-direito duplo</strong> requer atenção pra acústica (cortinas já instaladas + tapete grande Leroy Inspire 2×3m)
+    </div>
+  </div>
+
+  <div class="room priority">
+    <div class="room-name">Jantar</div>
+    <div class="room-area">17,16m² · 4,65 × 3,69m · pé-direito 2,80m</div>
+    <div class="room-dims">
+      <strong>Parede norte (4,65m):</strong> ~2,5m sólida + abertura pra cozinha<br>
+      <strong>Parede sul:</strong> integrada com estar (sem divisória)<br>
+      <strong>Parede leste/oeste (3,69m):</strong> mesa oval no centro + cadeiras<br>
+      <strong>Sem aparador</strong> (decisão Marina — louças cabem na cozinha)
+    </div>
+  </div>
+
+</div>
+
+<div class="info-banner">
+  <strong>Espaço integrado estar + jantar:</strong> ~34m² de sala única sem divisória, com pé-direito duplo no lado estar. Sofá fica de costas pra entrada (cria "espaço aconchegante" voltado pra TV) ou de frente pra entrada (depende da orientação final do L).
+</div>
+
+<!-- ========== SOFÁ ========== -->
+<h2>2 · Sofá em L cinza chumbo · sob medida</h2>
+<p class="section-meta">parede oeste do estar · uso intenso (filmes + jantar no sofá) · pet Paco · capa removível</p>
+
+<div class="card chosen">
+  <span class="card-tag">★ Escolhido — Empório Estofados (fábrica local Maringá)</span>
+  <h4>Sofá em L retrátil + reclinável SOB MEDIDA</h4>
+  <div class="brand">Empório Estofados Maringá · Av. Kakogawa 2025 · (44) 99774-0526 · @emporioestofadosmga</div>
+  <ul class="specs">
+    <li><strong>Comprimento principal:</strong> 3,00m (cabe folgado na parede oeste de 3,69m)</li>
+    <li><strong>Chaise perpendicular:</strong> 1,50m (forma o "L" voltado pro centro do estar)</li>
+    <li><strong>Tecido:</strong> linho cor <strong>cinza chumbo escuro</strong> (paleta dark cozy + esconde pelo do Paco)</li>
+    <li><strong>Estrutura:</strong> madeira eucalipto/pinus tratada</li>
+    <li><strong>Suspensão:</strong> percintas italianas (NÃO molas bonell baratas)</li>
+    <li><strong>Espuma:</strong> D33+ alta densidade nos assentos</li>
+    <li><strong>Função:</strong> retrátil (assento estende ~30cm) + reclinável (encosto deita)</li>
+    <li><strong>Capa removível</strong> pra lavar (pet-friendly)</li>
+    <li><strong>Encosto alto</strong> pra apoiar cabeça assistindo TV</li>
+    <li><strong>Profundidade do assento:</strong> 60-65cm (deitar confortável)</li>
+    <li><strong>Pés:</strong> palito metal preto fosco (visual flutuante)</li>
+  </ul>
+  <div class="price">R$ 4.500 – 7.500</div>
+  <div class="price-note">fábrica local · 30-45 dias prazo · economia 30-50% vs Oppa/Líder Casual · pós-venda local (peça quebra = atendem na hora)</div>
+  <a class="card-link" href="https://www.instagram.com/emporioestofadosmga/" target="_blank">Instagram Empório →</a>
+</div>
+
+<div class="info-banner">
+  <strong>📋 Briefing pra mandar pro Empório (Instagram ou WhatsApp):</strong>
+  <br><br>
+  <em>"Olá! Quero orçar sofá em L sob medida:</em>
+  <ul style="padding-left:20px; margin-top:8px; font-style:italic;">
+    <li>Formato em L: 3,00m + chaise 1,50m perpendicular</li>
+    <li>Função: retrátil (~30cm) + reclinável encosto</li>
+    <li>Tecido: linho cor <strong>cinza chumbo escuro</strong></li>
+    <li>Estrutura: madeira eucalipto tratada</li>
+    <li>Suspensão: <strong>percintas italianas</strong> (não molas bonell)</li>
+    <li>Espuma: <strong>D33+ alta densidade</strong></li>
+    <li>Capa removível pra lavar (tenho pet)</li>
+    <li>Pés: palito metal preto fosco</li>
+    <li>Encosto alto + profundidade do assento 60-65cm</li>
+  </ul>
+  <em>Posso passar no showroom? Qual o prazo e forma de pagamento?"</em>
+  <br><br>
+  <strong>Dica:</strong> peça orçamento também pra Schumann Estofados e Sofás direto da Fábrica Maringá com o mesmo briefing pra comparar.
+</div>
+
+<!-- ========== MESA DE CENTRO ========== -->
+<h2>3 · Mesa de centro · maciça</h2>
+<p class="section-meta">na frente do sofá · borda arredondada (pet-friendly) · maciça (Marina pesquisou — encontrou a partir de R$ 500)</p>
+
+<div class="card chosen">
+  <span class="card-tag">★ Escolhida — MadeiraMadeira</span>
+  <h4>Mesa de Centro Orgânica 120cm Madeira Maciça Cappuccino</h4>
+  <div class="brand">MadeiraMadeira · madeira maciça · formato orgânico · 120cm</div>
+  <ul class="specs">
+    <li><strong>Dimensão:</strong> 120cm (acompanha bem o sofá em L de 4,50m)</li>
+    <li><strong>Material:</strong> madeira MACIÇA (não MDF)</li>
+    <li><strong>Cor:</strong> cappuccino (marrom médio-escuro)</li>
+    <li><strong>Formato:</strong> orgânico/arredondado — pet-friendly Paco (sem quinas vivas)</li>
+    <li><strong>Visual na sala:</strong> tom mais claro que a marcenaria nogueira escura → cria respiro visual + combina com tapete de juta natural</li>
+  </ul>
+  <div class="price">R$ 570,98</div>
+  <div class="price-note">MadeiraMadeira · dentro do budget</div>
+  <a class="card-link" href="https://www.madeiramadeira.com.br/mesa-de-centro-organica-120-cm-madeira-macica-285204231.html" target="_blank">Ver na MadeiraMadeira →</a>
+</div>
+
+<!-- ========== DECISÃO MESA + CADEIRAS — 3 CENÁRIOS ========== -->
+<h2>4 · Mesa de jantar + 6 cadeiras · 3 cenários pra decidir</h2>
+<p class="section-meta">Higor escolhe entre A, B ou C · cada cenário inclui mesa + 6 cadeiras como pacote completo</p>
+
+<style>
+  .scenarios-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin: 24px 0;
+  }
+  @media (max-width: 900px) {
+    .scenarios-grid { grid-template-columns: 1fr; }
+  }
+  .scenario {
+    background: #1f1812;
+    border: 2px solid #3a2a1a;
+    border-radius: 8px;
+    padding: 22px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+  }
+  .scenario.premium { border-color: #c9a07a; background: linear-gradient(180deg, #251a12 0%, #1f1812 100%); }
+  .scenario.economic { border-color: #6a7a4a; background: linear-gradient(180deg, #1a2515 0%, #1f1812 100%); }
+  .scenario.combo { border-color: #8b5a3c; background: linear-gradient(180deg, #251a12 0%, #1f1812 100%); }
+  .scenario-letter {
+    position: absolute;
+    top: -14px;
+    left: 22px;
+    background: #c9a07a;
+    color: #15100c;
+    padding: 4px 14px;
+    border-radius: 4px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    font-size: 13px;
+  }
+  .scenario.premium .scenario-letter { background: #c9a07a; }
+  .scenario.economic .scenario-letter { background: #8da866; color: #15100c; }
+  .scenario.combo .scenario-letter { background: #8b5a3c; color: #15100c; }
+  .scenario-title { font-size: 17px; color: #e8dcc8; margin: 8px 0 4px; font-weight: 600; }
+  .scenario-subtitle { font-size: 12px; color: #8b7560; margin-bottom: 14px; letter-spacing: 1px; text-transform: uppercase; }
+  .scenario-total {
+    font-size: 26px;
+    color: #c9a07a;
+    font-weight: 600;
+    margin: 12px 0 4px;
+  }
+  .scenario-savings { font-size: 12px; color: #8da866; margin-bottom: 14px; min-height: 18px; }
+  .scenario-items {
+    background: rgba(0,0,0,0.2);
+    padding: 12px 14px;
+    border-radius: 4px;
+    margin-bottom: 14px;
+    font-size: 13px;
+    color: #c8b896;
+  }
+  .scenario-items div { padding: 3px 0; }
+  .scenario-items div strong { color: #c9a07a; }
+  .scenario-pros { font-size: 12px; margin-bottom: 14px; flex-grow: 1; }
+  .scenario-pros .pro { color: #8da866; padding: 2px 0; }
+  .scenario-pros .pro:before { content: "✓ "; }
+  .scenario-pros .con { color: #c9a07a; padding: 2px 0; }
+  .scenario-pros .con:before { content: "△ "; }
+  .scenario-link {
+    display: block;
+    text-align: center;
+    padding: 8px;
+    background: #3a2a1a;
+    color: #c9a07a;
+    text-decoration: none;
+    border-radius: 4px;
+    font-size: 12px;
+    margin-top: 6px;
+  }
+  .scenario-link:hover { background: #4a3a2a; }
+</style>
+
+<div class="scenarios-grid">
+
+  <!-- CENÁRIO A — PREMIUM -->
+  <div class="scenario premium">
+    <div class="scenario-letter">A · PREMIUM</div>
+    <div class="scenario-title">6 lugares CONFORTÁVEIS sempre</div>
+    <div class="scenario-subtitle">Estilo orgânico premium · rattan + cinamomo</div>
+    <div class="scenario-total">R$ 7.301,52</div>
+    <div class="scenario-savings">&nbsp;</div>
+    <div class="scenario-items">
+      <div><strong>Mesa:</strong> Bella Brasil Cinnamon Cone Oval 1,80m · cinamomo maciço</div>
+      <div><strong>Cadeiras:</strong> Zefter Lane rattan natural castanho (6un · ~R$ 632/un)</div>
+    </div>
+    <div class="scenario-pros">
+      <div class="pro">Mesa 1,80m oval — 6 lugares confortáveis SEMPRE</div>
+      <div class="pro">Base cone oval (estilo Tulip) — escultural premium</div>
+      <div class="pro">Rattan natural castanho — estilo "boutique cozy"</div>
+      <div class="pro">Visual mais elegante dos 3</div>
+      <div class="con">Mais caro (+R$ 2.121 vs C)</div>
+      <div class="con">71cm de circulação cada lado (justo)</div>
+      <div class="con">Rattan + tecido pega mais pelo do Paco</div>
+    </div>
+    <a class="scenario-link" href="https://www.bellabrasildecor.com.br/mesas/mesas-de-jantar/mesa-de-jantar-cone-oval-madeira-cinnamon-tampo-de-madeira-cinnamon" target="_blank">Ver mesa Bella Brasil →</a>
+    <a class="scenario-link" href="https://www.zeftermoveis.com.br/kit-6-cadeiras-lane-madeira-macica-estofada-rattan-natural-castanho" target="_blank">Ver cadeiras Zefter Lane →</a>
+  </div>
+
+  <!-- CENÁRIO B — REDONDA 140cm 6 LUGARES -->
+  <div class="scenario economic">
+    <div class="scenario-letter">B · REDONDA 140cm</div>
+    <div class="scenario-title">6 confortáveis · sala respira</div>
+    <div class="scenario-subtitle">Mesa redonda 140cm + cadeiras rattan</div>
+    <div class="scenario-total">R$ 6.321,92</div>
+    <div class="scenario-savings">↓ R$ 979,60 vs Cenário A</div>
+    <div class="scenario-items">
+      <div><strong>Mesa:</strong> Avencal Ravena Redonda Ø 140cm · cinamomo maciço · R$ 2.527,20</div>
+      <div><strong>Cadeiras:</strong> Zefter Lane rattan natural castanho (6un · ~R$ 632/un)</div>
+    </div>
+    <div class="scenario-pros">
+      <div class="pro">6 lugares CONFORTÁVEIS SEMPRE (igual à Bella Brasil)</div>
+      <div class="pro">Mesma madeira (cinamomo maciço) da Bella Brasil</div>
+      <div class="pro">Cabe MUITO folgado na sala (1,22m circulação cada lado)</div>
+      <div class="pro">Formato redondo = mais social/intimista (sem hierarquia de cabeceira)</div>
+      <div class="pro">Cadeiras rattan natural premium</div>
+      <div class="pro">Economiza R$ 979,60 vs A — vai pra cabeceira ripada/decor</div>
+      <div class="con">Sem o visual escultural da base cone Tulip</div>
+      <div class="con">Sem o estilo oval "formal"</div>
+    </div>
+    <a class="scenario-link" href="https://www.avencalmoveis.com.br/mesa-ravena-madeira-macica" target="_blank">Ver mesa Avencal Ravena →</a>
+    <a class="scenario-link" href="https://www.zeftermoveis.com.br/kit-6-cadeiras-lane-madeira-macica-estofada-rattan-natural-castanho" target="_blank">Ver cadeiras Zefter Lane →</a>
+  </div>
+
+  <!-- CENÁRIO C — CONJUNTO INTEGRADO -->
+  <div class="scenario combo">
+    <div class="scenario-letter">C · CONJUNTO</div>
+    <div class="scenario-title">Pacote completo · 1 fornecedor</div>
+    <div class="scenario-subtitle">Mesa + cadeiras courino caramelo</div>
+    <div class="scenario-total">R$ 5.180,40</div>
+    <div class="scenario-savings">↓ R$ 2.121,12 vs Cenário A</div>
+    <div class="scenario-items">
+      <div><strong>Mesa:</strong> Criarelar Venezza Orgânica 1,60m oval</div>
+      <div><strong>Cadeiras:</strong> 6 estofadas courino caramelo (incluídas)</div>
+    </div>
+    <div class="scenario-pros">
+      <div class="pro">MAIS BARATO dos 3 (-R$ 2.121 vs A)</div>
+      <div class="pro">Pacote completo · 1 só fornecedor</div>
+      <div class="pro">Courino caramelo QUEBRA monotonia escura (tom quente)</div>
+      <div class="pro">Courino é PET-FRIENDLY (passa pano úmido fácil)</div>
+      <div class="pro">Estilo moderno boutique</div>
+      <div class="con">6 lugares fica JUSTO na mesa 1,60m</div>
+      <div class="con">Confirmar com Criarelar: mesa é maciça?</div>
+      <div class="con">Visual menos "natural orgânico"</div>
+    </div>
+    <a class="scenario-link" href="https://www.criarelar.com.br/conjunto-de-mesa-venezza-organica-160-e-6-cadeiras-estofadas-amendoa-courino-caramelo" target="_blank">Ver conjunto Criarelar →</a>
+  </div>
+
+</div>
+
+<div class="info-banner">
+  <strong>🎯 Como decidir — agora é só estilo:</strong>
+  <p style="margin-top:8px;">Com a Avencal Ravena 140cm, tanto o cenário A quanto o B têm <strong>6 lugares CONFORTÁVEIS</strong> e <strong>cinamomo maciço</strong>. A escolha agora é puramente estética + preço.</p>
+  <ol style="padding-left:20px; margin-top:8px;">
+    <li><strong>Formato preferido?</strong>
+      <ul style="padding-left:20px; margin-top:4px;">
+        <li>OVAL formal com base cone Tulip → <strong style="color:#c9a07a;">A · Bella Brasil</strong> (+R$ 980)</li>
+        <li>REDONDA social/intimista → <strong style="color:#8da866;">B · Avencal 140cm</strong></li>
+        <li>OVAL com cadeiras estofadas caramelo → <strong style="color:#8b5a3c;">C · Criarelar</strong> (-R$ 1.141 vs B)</li>
+      </ul>
+    </li>
+    <li><strong>Tecido das cadeiras?</strong>
+      <ul style="padding-left:20px; margin-top:4px;">
+        <li>Rattan natural castanho (orgânico boutique) → <strong style="color:#c9a07a;">A</strong> ou <strong style="color:#8da866;">B</strong></li>
+        <li>Courino caramelo (moderno, super pet-friendly) → <strong style="color:#8b5a3c;">C</strong></li>
+      </ul>
+    </li>
+  </ol>
+  <strong style="display:block; margin-top:10px; padding:10px; background:rgba(141, 168, 102, 0.1); border-radius:4px;">
+    💡 Dica: a economia de R$ 980-2.120 escolhendo B ou C pode ir pra <strong>cabeceira ripada suíte</strong>, <strong>decor extra</strong>, ou <strong>reserva de imprevistos</strong>.
+  </strong>
+</div>
+
+<!-- ========== ILUMINAÇÃO ========== -->
+<h2>6 · Iluminação</h2>
+<p class="section-meta">3 pendentes ilha cozinha + 1 pendente mesa jantar + 1 pendente simples pé-direito duplo + 1 arandela sofá</p>
+
+<table class="compact-table">
+  <tr>
+    <th>Item</th>
+    <th>Specs + Link</th>
+    <th>Preço</th>
+  </tr>
+  <tr>
+    <td><strong>3× Pendentes ilha cozinha</strong><br><span style="color:#8da866; font-size:11px;">✅ ESCOLHIDO</span></td>
+    <td>★ <strong>Oliver Canadá kit 3</strong> · cone preto + interior cobre · alumínio · 15×28cm · cabo 1m ajustável · E27 bivolt<br>
+      <a href="https://produto.mercadolivre.com.br/MLB-1825430765-3-luminarias-pendentes-cone-canada-sala-cozinha-churrasqueir-_JM" target="_blank" style="color:#c9a07a; font-size:11px;">→ Ver no Mercado Livre</a>
+    </td>
+    <td><strong>R$ 73,97 (kit 3)</strong></td>
+  </tr>
+  <tr>
+    <td><strong>Kit 6 Lâmpadas Edison</strong><br><span style="color:#8da866; font-size:11px;">✅ ESCOLHIDO</span></td>
+    <td>★ <strong>Kit 6 Philips Retro Filamento LED ST64 4W 400lm</strong> · 2500K Edison vintage · "luz de fogueira" · 5 usadas (3 ilha + 1 mesa jantar + 1 pé-direito) + 1 reserva · avaliação 4.7 ⭐<br>
+      <a href="https://www.mercadolivre.com.br/kit-6-lampadas-retro-filamento-led-4w-st64-400lm-philips/up/MLBU1399240471" target="_blank" style="color:#c9a07a; font-size:11px;">→ Ver kit 6 no Mercado Livre</a>
+    </td>
+    <td><strong>R$ 170,76</strong></td>
+  </tr>
+  <tr>
+    <td><strong>1× Pendente mesa jantar</strong><br><span style="color:#8da866; font-size:11px;">✅ ESCOLHIDO</span></td>
+    <td>★ <strong>Casa Inno Pendente Aruana G</strong> · fibra de milho natural · Ø 60cm × 34cm altura · cabo 1,5m + canopla metal preto · E27 bivolt · kit instalação brinde<br>
+      <a href="https://casainno.com.br/products/luminaria-pendente-de-palha-aruana-g" target="_blank" style="color:#c9a07a; font-size:11px;">→ Ver Casa Inno</a>
+    </td>
+    <td><strong>R$ 497</strong></td>
+  </tr>
+  <tr>
+    <td><strong>1× Pendente pé-direito duplo</strong><br><span style="color:#8da866; font-size:11px;">✅ ESCOLHIDO</span></td>
+    <td>★ <strong>Gimpo Wabi Sabi LTJ40-PRETO</strong> · metal + resina · cor preto fosco · 24×33×41cm (oval orgânico) · E27 bivolt · estilo japonês wabi-sabi · vai com lâmpada Philips ST64 2500K do kit 6<br>
+      <a href="https://www.mercadolivre.com.br/lustre-pendente-40cm-japons-orgnico-wabi-sabi-minimalista/p/MLB63773119" target="_blank" style="color:#c9a07a; font-size:11px;">→ Ver Gimpo Wabi Sabi</a>
+    </td>
+    <td><strong>R$ 477,90</strong></td>
+  </tr>
+  <tr>
+    <td><strong>Subtotal iluminação</strong></td>
+    <td>Oliver Canadá + Casa Inno Aruana G + Gimpo Wabi Sabi + Kit 6 lâmpadas Philips ST64</td>
+    <td><strong>R$ 1.219,63 ✅ CRAVADO</strong></td>
+  </tr>
+</table>
+
+<div class="info-banner">
+  <strong>📝 Status: ✅ ILUMINAÇÃO COMPLETA</strong> (arandela sofá cortada — sofá fica "ilha" sem parede atrás).
+  <br><br>
+  <strong>Total iluminação:</strong> R$ 1.048,87 (3 pendentes + lâmpadas Philips ST64 incluso o que pagar do kit 6).
+  <br><br>
+  <strong>Lâmpada extra do kit 6:</strong> sobra 2 lâmpadas (kit 6 - 5 usadas = 2 reserva pra reposição futura)
+</div>
+
+<!-- ========== TAPETES ========== -->
+<h2>7 · Tapetes</h2>
+
+<table class="compact-table">
+  <tr>
+    <th>Tapete</th>
+    <th>Specs + Link</th>
+    <th>Preço</th>
+  </tr>
+  <tr>
+    <td><strong>Sob o sofá (estar)</strong><br><span style="color:#8da866; font-size:11px;">✅ ESCOLHIDO</span></td>
+    <td>★ <strong>Leroy Merlin Inspire Nils Dourado</strong> · tapete multiuso juta retangular · 2×3m · padrão abstrato com detalhes dourados (dialoga com cobre dos pendentes Oliver Canadá da ilha)<br>
+      <a href="https://www.leroymerlin.com.br/tapete-multiuso-juta-retangular-2x3m-inspire-abstrato-nils-dourado_92206100" target="_blank" style="color:#c9a07a; font-size:11px;">→ Ver Leroy Merlin</a>
+    </td>
+    <td><strong>R$ 1.899,90</strong></td>
+  </tr>
+  <tr>
+    <td><strong>Subtotal tapetes</strong></td>
+    <td>Inspire Nils Dourado sob sofá</td>
+    <td><strong>R$ 1.899,90</strong></td>
+  </tr>
+</table>
+
+<!-- ========== CORTINAS DECORATIVAS CLARAS TETO-CHÃO ========== -->
+<h2>8 · Cortinas decorativas claras teto-chão</h2>
+<p class="section-meta">Sobre os blackouts JÁ INSTALADOS pelo construtor · adicionar cortina decorativa clara em linho/voil pra ter "dupla camada"</p>
+
+<div class="info-banner">
+  <strong>💡 Sobre dupla camada (decorativa + blackout):</strong> blackouts existentes ficam ATRÁS (escondidos quando cortinas decorativas estão fechadas) · cortinas decorativas claras ficam na FRENTE (visíveis durante o dia · permite luz natural filtrada).
+</div>
+
+<div class="card alt">
+  <span class="card-tag">A pesquisar — Cortineiro local Maringá ou pronta</span>
+  <h4>Cortina decorativa linho/voil claro teto-chão</h4>
+  <div class="brand">Cortineiro local Maringá · pesquisar Westwing, Tok&amp;Stok</div>
+  <ul class="specs">
+    <li><strong>Cor:</strong> areia natural / linho cru / off-white (acento de luz na paleta dark)</li>
+    <li><strong>Tecido sugerido:</strong> linho real misto (60% linho + 40% algodão) OU voil leve</li>
+    <li><strong>Caimento:</strong> teto-chão (alongando visualmente o pé-direito)</li>
+    <li><strong>Forração:</strong> sem (decorativa pura · blackout já tem)</li>
+    <li><strong>Trilho:</strong> sobre os blackouts existentes (pedir cortineiro pra avaliar)</li>
+  </ul>
+  <div class="price">R$ 2.000 – 6.000 (a refinar)</div>
+  <div class="price-note">faixa varia conforme: quantidade de ambientes · pé-direito (padrão 2,80m ou duplo ~5,40m) · sob medida cortineiro local OU pronta Westwing/Tok&Stok</div>
+</div>
+
+<div class="warn-banner">
+  <strong>⚠ Pra estimar o orçamento — preciso saber:</strong>
+  <ol style="padding-left:20px; margin-top:6px;">
+    <li><strong>Quais ambientes</strong> vão receber cortina decorativa? (sala? suíte? jantar? escritório? quarto visitas?)</li>
+    <li><strong>Tem cortineiro local Maringá em mente</strong> ou prefere comprar pronta (Westwing/Tok&amp;Stok)?</li>
+    <li><strong>Altura pé-direito</strong> em cada ambiente: padrão 2,80m ou duplo ~5,40m (sala)?</li>
+  </ol>
+</div>
+
+<!-- ========== ALMOFADAS + DECOR ========== -->
+<h2>9 · Almofadas + plantas + decor</h2>
+
+<table class="compact-table">
+  <tr>
+    <th>Item</th>
+    <th>Specs</th>
+    <th>Preço</th>
+  </tr>
+  <tr>
+    <td><strong>6 almofadas mix (capas + miolos)</strong><br><span style="color:#8da866; font-size:11px;">✅ ESCOLHIDO — Amofadas</span></td>
+    <td>★ <strong>2× Linho terracota com aba + 2× Veludo verde oliva + 2× Veludo caramelo + 6 enchimentos 45×45</strong> · todas Amofadas (frete único) · cores combinam com paleta dark cozy + dialoga cobre dos pendentes<br>
+      <a href="https://www.amofadas.com/" target="_blank" style="color:#c9a07a; font-size:11px;">→ Ver loja Amofadas</a>
+    </td>
+    <td><strong>R$ 663,92</strong></td>
+  </tr>
+  <tr>
+    <td><strong>Plantas grandes + vasos</strong><br><span style="color:#8da866; font-size:11px;">✅ JÁ TEM</span></td>
+    <td>★ <strong>Marina+Higor JÁ POSSUEM 2 plantas grandes com vasos bonitos</strong> · usar essas de primeira na sala (canto chaise + entre estar/jantar) · se quiser mais depois, pode adicionar (Cobasi Maringá · Costela, Pacová, Olívia, Ráfia)</td>
+    <td style="color:#8da866;"><strong>R$ 0 — JÁ TEM</strong></td>
+  </tr>
+  <tr>
+    <td><strong>Quadro grande parede sofá em L</strong><br><span style="color:#c9a07a; font-size:11px;">⏳ Decisão pendente — 2 caminhos</span></td>
+    <td>
+      Estilo desejado: <strong>abstrato horizonte wabi-sabi</strong> · tons sépia/caramelo + preto · 1 quadro statement 120-160cm · moldura preta fina · sobre parede oeste do sofá em L<br><br>
+      <strong>Opção A — Urban Arts (premium):</strong> Watercolor Horizon in Soft Coral and Gray · 160×120cm · acabamento liso vidro · moldura preta · entrega rápida<br>
+      <a href="https://www.urbanarts.com.br/quadro-minimalista-watercolor-horizon-in-soft-coral-and-gray/p?tamanho=40&acabamento=LS&moldura=94" target="_blank" style="color:#c9a07a; font-size:11px;">→ Ver Urban Arts</a><br>
+      <em style="color:#a89684; font-size:12px;">⚠ Conferir cor coral vs paleta dark cozy</em><br><br>
+      <strong>Opção B — Artista local Maringá (recomendado):</strong> obra ORIGINAL pintada à mão · sob medida exato 1,60×1,20m · cores customizadas (sépia + preto + caramelo) · valor afetivo + investimento · pesquisar Instagram artistas Maringá<br>
+      <em style="color:#a89684; font-size:12px;">Termos busca: #artemaringa, #artistasmaringa, #arteabstrata #maringa</em>
+    </td>
+    <td>
+      <strong>A. Urban Arts:</strong><br>R$ 3.998<br><br>
+      <strong>B. Artista local:</strong><br>R$ 2.000 – 5.000
+    </td>
+  </tr>
+  <tr>
+    <td><strong>Cerâmicas artesanais</strong><br><span style="color:#8da866; font-size:11px;">✅ MARINA FAZ</span></td>
+    <td>★ <strong>Marina vai fazer as cerâmicas à mão</strong> · vasos pequenos, tigelas, objetos decorativos pra mesa de centro + aparador · diferencial único da casa · valor afetivo</td>
+    <td style="color:#8da866;"><strong>R$ 0 — JÁ FAZ</strong></td>
+  </tr>
+  <tr>
+    <td><strong>Bíblias empilhadas pra mesa de centro</strong><br><span style="color:#8da866; font-size:11px;">✅ JÁ TÊM</span></td>
+    <td>★ <strong>Bíblias pessoais de Marina + Higor empilhadas</strong> · capas de couro escuro envelhecido = visual lindo combina com paleta dark cozy · valor afetivo único · substituem livros de design genéricos</td>
+    <td style="color:#8da866;"><strong>R$ 0 — JÁ TÊM</strong></td>
+  </tr>
+  <tr>
+    <td><strong>Bandeja mesa de centro</strong><br><span style="color:#8da866; font-size:11px;">✅ MARINA FAZ</span></td>
+    <td>★ <strong>Marina vai fazer a bandeja em cerâmica</strong> (mesma família das outras cerâmicas artesanais) · esmaltada em caramelo, preto fosco ou bege natural · evita "madeira na madeira" da mesa Cappuccino</td>
+    <td style="color:#8da866;"><strong>R$ 0 — JÁ FAZ</strong></td>
+  </tr>
+  <tr>
+    <td><strong>Objetos decor complementares (opcional)</strong></td>
+    <td>Velas aromáticas · porta-velas · objetos artesanais pequenos · Tok&amp;Stok/Shopee</td>
+    <td>R$ 100 – 300</td>
+  </tr>
+  <tr>
+    <td><strong>Subtotal decor</strong></td>
+    <td>Almofadas (R$ 663,92) + Quadro (R$ 2.000-3.998) + Cerâmicas Marina + Bíblias + Objetos complementares (R$ 100-300)</td>
+    <td><strong>R$ 2.763 – 4.961</strong></td>
+  </tr>
+</table>
+
+<div class="info-banner" style="margin-top:20px;">
+  <strong>📋 Estratégia recomendada pro QUADRO:</strong>
+  <ol style="padding-left:20px; margin-top:6px;">
+    <li><strong>Pesquisar 3-5 artistas locais Maringá no Instagram</strong> antes de comprar Urban Arts (15 minutos de pesquisa pode economizar R$ 1-2k + entregar obra ORIGINAL única)</li>
+    <li><strong>Comparar:</strong> Urban Arts (impressão giclée + moldura · entrega 7-15 dias) vs Artista local (obra original · 15-30 dias · customizada)</li>
+    <li><strong>Comprar DEPOIS da casa pronta:</strong> só fechar quando puder ver as paredes pintadas + iluminação real</li>
+  </ol>
+</div>
+
+<!-- ========== RESUMO ========== -->
+<div class="summary">
+  <h3 style="color:#c9a07a; margin-bottom:16px;">Resumo final — Sala completa (estar + jantar)</h3>
+  <table>
+    <tr>
+      <th>Item</th>
+      <th>Escolhido</th>
+      <th>Faixa</th>
+    </tr>
+    <tr><td>Sofá em L cinza chumbo</td><td>Empório Estofados sob medida 3m + 1,5m chaise</td><td>R$ 4.500 – 7.500</td></tr>
+    <tr><td>Mesa de centro maciça</td><td>MadeiraMadeira Orgânica 120cm Cappuccino</td><td>R$ 570,98</td></tr>
+    <tr><td colspan="2"><strong>Mesa + 6 cadeiras (3 cenários pra decidir com Higor)</strong></td><td></td></tr>
+    <tr><td>↳ A. Premium</td><td>Bella Brasil 1,80m + Zefter Lane rattan</td><td>R$ 7.301,52</td></tr>
+    <tr><td>↳ B. Redonda 140cm</td><td>Avencal Ravena Ø140cm + Zefter Lane rattan</td><td>R$ 6.321,92</td></tr>
+    <tr><td>↳ C. Conjunto</td><td>Criarelar Venezza + 6 courino caramelo</td><td>R$ 5.180,40</td></tr>
+    <tr><td>Iluminação completa</td><td>Oliver Canadá + Casa Inno Aruana G + Gimpo Wabi Sabi + Kit 6 Philips ST64 (arandela cortada)</td><td>R$ 1.219,63</td></tr>
+    <tr><td>Tapete sob sofá</td><td>Leroy Merlin Inspire Nils Dourado 2×3m</td><td>R$ 1.899,90</td></tr>
+    <tr><td>Cortinas decorativas claras teto-chão</td><td>Linho/voil claro sobre os blackouts já instalados · cortineiro local Maringá</td><td>R$ 2.000 – 6.000 (depende ambientes)</td></tr>
+    <tr><td>Almofadas (6 capas + 6 miolos)</td><td>Amofadas · 2 linho terracota + 2 veludo oliva + 2 veludo caramelo</td><td>R$ 663,92</td></tr>
+    <tr><td>Plantas + vasos</td><td style="color:#8da866;">✅ JÁ TÊM 2 plantas com vasos bonitos</td><td style="color:#8da866;">R$ 0</td></tr>
+    <tr><td>Quadro grande parede sofá</td><td>Urban Arts Watercolor Horizon (R$ 3.998) OU artista local Maringá obra original</td><td>R$ 2.000 – 3.998</td></tr>
+    <tr><td>Cerâmicas + bandeja</td><td style="color:#8da866;">✅ MARINA FAZ tudo cerâmica</td><td style="color:#8da866;">R$ 0</td></tr>
+    <tr><td>Bíblias empilhadas mesa centro</td><td style="color:#8da866;">✅ JÁ TÊM (couro escuro · combina paleta)</td><td style="color:#8da866;">R$ 0</td></tr>
+    <tr><td>Objetos decor complementares (opcional)</td><td>Velas, porta-velas, objetos pequenos</td><td>R$ 100 – 300</td></tr>
+    <tr class="total">
+      <td colspan="2">TOTAL FAIXA</td>
+      <td>R$ 15.650 – 31.000</td>
+    </tr>
+  </table>
+  <p style="margin-top:16px; font-size:13px; color:#a89684;">
+    <strong style="color:#c9a07a;">Cenário realista esperado:</strong> ~<strong style="color:#8da866;">R$ 18-22k</strong> (faixa central · cortinas zeradas dão alívio massivo no budget)
+  </p>
+  <p style="margin-top:8px; font-size:12px; color:#8b7560;">
+    <strong>Economias já feitas:</strong> cortinas da casa inteira (~R$ 15-25k) JÁ INSTALADAS pelo construtor · cluster de pendentes complexo cortado (~R$ 2k) · arandela sofá cortada (~R$ 700) · cadeiras 8 → 6 lugares (~R$ 1k) · tapete mesa jantar cortado (~R$ 1k).
+  </p>
+</div>
+
+<!-- ========== SEQUÊNCIA DE COMPRA ========== -->
+<h2>10 · Sequência de compra recomendada</h2>
+
+<table class="compact-table">
+  <tr>
+    <th width="10%">Ordem</th>
+    <th>Item</th>
+    <th>Prazo</th>
+    <th>Quando comprar</th>
+  </tr>
+  <tr>
+    <td>1</td>
+    <td>Mesa jantar + mesa centro (mesmo marceneiro local · lote)</td>
+    <td>30-45 dias</td>
+    <td>Já — assim que tiver marceneiro fechado</td>
+  </tr>
+  <tr>
+    <td>2</td>
+    <td>Sofá Empório Estofados</td>
+    <td>30-45 dias</td>
+    <td>Após piso pronto (não antes pra confirmar dimensão exata)</td>
+  </tr>
+  <tr>
+    <td>3</td>
+    <td>6 cadeiras</td>
+    <td>15-30 dias</td>
+    <td>Logo após pedir mesa jantar</td>
+  </tr>
+  <tr>
+    <td>4</td>
+    <td>Iluminação + tapetes + almofadas + decor</td>
+    <td>compra imediata</td>
+    <td>Após móveis principais no lugar</td>
+  </tr>
+</table>
+
+</div>
+</body>
+</html>

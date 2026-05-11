@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Casa Nova · Higor & Marina · Índice</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif; background: #15100c; color: #e8dcc8; line-height: 1.6; padding: 40px 20px; }
+  .container { max-width: 1100px; margin: 0 auto; }
+  header { text-align: center; padding: 30px 0 50px; border-bottom: 1px solid #3a2a1a; margin-bottom: 50px; }
+  h1 { font-size: 38px; font-weight: 300; letter-spacing: 3px; color: #c9a07a; }
+  .subtitle { font-size: 14px; color: #8b7560; margin-top: 12px; letter-spacing: 4px; text-transform: uppercase; }
+  h2 { font-size: 24px; font-weight: 400; color: #c9a07a; margin: 50px 0 20px; }
+  .links-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin-bottom: 30px; }
+  .link-card { background: #1f1812; border: 1px solid #3a2a1a; border-radius: 6px; padding: 24px; text-decoration: none; color: #e8dcc8; transition: all 0.2s; display: block; }
+  .link-card:hover { border-color: #8b5a3c; background: #251a12; transform: translateY(-2px); }
+  .link-card .num { color: #c9a07a; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 8px; }
+  .link-card .title { font-size: 18px; color: #e8dcc8; margin-bottom: 8px; font-weight: 500; }
+  .link-card .desc { font-size: 13px; color: #a89684; }
+  .link-card .price { font-size: 14px; color: #c9a07a; margin-top: 12px; font-weight: 500; }
+
+  .summary-box { background: #1f1812; border: 1px solid #8b5a3c; border-radius: 6px; padding: 30px; margin: 40px 0; }
+  .summary-box table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  .summary-box th { text-align: left; padding: 12px; background: #2a201a; color: #c9a07a; font-weight: 500; }
+  .summary-box td { padding: 12px; border-bottom: 1px solid #2a201a; color: #c8b896; }
+  .summary-box td.right { text-align: right; }
+  .summary-box tr.total td { background: linear-gradient(90deg, #2a201a 0%, #3a2a1a 100%); font-weight: 700; color: #c9a07a; border-top: 2px solid #8b5a3c; font-size: 16px; }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+<header>
+  <h1>CASA NOVA</h1>
+  <div class="subtitle">Higor &amp; Marina · Maringá-PR · 139,86m²</div>
+</header>
+
+<!-- ============== PLANILHAS DE PRODUTOS ============== -->
+<h2>Planilhas por ambiente</h2>
+<div class="links-grid">
+
+  <a class="link-card" href="produtos-ac.html">
+    <div class="num">01</div>
+    <div class="title">Ar-condicionado</div>
+    <div class="desc">4 ACs novos · 2× Philco 18k (cozinha + sala) + 2× Philco 9k (visitas + escritório)</div>
+    <div class="price">R$ 11.896</div>
+  </a>
+
+  <a class="link-card" href="produtos-eletrodomesticos.html">
+    <div class="num">02</div>
+    <div class="title">Eletrodomésticos</div>
+    <div class="desc">Geladeira + cooktop indução + coifa + forno embutido + lava-louças + lava+seca</div>
+    <div class="price">R$ 23.716</div>
+  </a>
+
+  <a class="link-card" href="produtos-marcenaria.html">
+    <div class="num">03</div>
+    <div class="title">Marcenaria sob medida</div>
+    <div class="desc">12 peças sob medida · cozinha + ilha + churrasqueira + painel TV + suíte + banheiros</div>
+    <div class="price">R$ 48.000</div>
+  </a>
+
+  <a class="link-card" href="produtos-sala.html">
+    <div class="num">04</div>
+    <div class="title">Sala (estar + jantar)</div>
+    <div class="desc">Sofá em L cinza chumbo + mesa centro + mesa jantar + 6 cadeiras + iluminação + tapetes</div>
+    <div class="price">R$ 15.650</div>
+  </a>
+
+  <a class="link-card" href="produtos-suite.html">
+    <div class="num">05</div>
+    <div class="title">Suíte master</div>
+    <div class="desc">Colchão Castor Lausane Pocket king + tapete Westwing + enxoval Percalle/Amofadas/Karsten</div>
+    <div class="price">R$ 12.704</div>
+  </a>
+
+  <a class="link-card" href="produtos-area-lazer.html">
+    <div class="num">06</div>
+    <div class="title">Área de lazer</div>
+    <div class="desc">Spa Lineaplas Vienna + deck WPC + banco-baú + mesa+cadeiras + projetor + tela + plantas</div>
+    <div class="price">R$ 21.470</div>
+  </a>
+
+  <a class="link-card" href="produtos-demais.html">
+    <div class="num">07</div>
+    <div class="title">Demais ambientes</div>
+    <div class="desc">Banheiros + escritório + quarto visitas + hall + lavanderia + pátio interno</div>
+    <div class="price">R$ 11.845</div>
+  </a>
+
+</div>
+
+<!-- ============== ORÇAMENTO TOTAL ============== -->
+<h2>Orçamento total</h2>
+
+<div class="summary-box">
+  <table>
+    <tr>
+      <th>Categoria</th>
+      <th class="right">Valor</th>
+    </tr>
+    <tr><td>01 · Ar-condicionado</td><td class="right">R$ 11.896</td></tr>
+    <tr><td>02 · Eletrodomésticos</td><td class="right">R$ 23.716</td></tr>
+    <tr><td>03 · Marcenaria sob medida</td><td class="right">R$ 48.000</td></tr>
+    <tr><td>04 · Sala (estar + jantar)</td><td class="right">R$ 15.650</td></tr>
+    <tr><td>05 · Suíte master</td><td class="right">R$ 12.704</td></tr>
+    <tr><td>06 · Área de lazer</td><td class="right">R$ 21.470</td></tr>
+    <tr><td>07 · Demais ambientes</td><td class="right">R$ 11.845</td></tr>
+    <tr class="total">
+      <td>TOTAL</td>
+      <td class="right">R$ 145.281</td>
+    </tr>
+  </table>
+  <p style="margin-top:16px; font-size:13px; color:#a89684; text-align:center;">
+    Margem +10% (imprevistos): até <strong style="color:#c9a07a;">R$ 159.809</strong>
+  </p>
+</div>
+
+<footer style="text-align:center; padding:30px 0; margin-top:60px; border-top:1px solid #3a2a1a; color:#8b7560; font-size:13px;">
+  <p>Higor &amp; Marina · Maringá · Casa nova</p>
+</footer>
+
+</div>
+</body>
+</html>
